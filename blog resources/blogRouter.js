@@ -44,3 +44,33 @@ router.get('/:id/comments', (req, res) => {
         res.status(500).json({message: 'could not retrieve data'})
     })
 })
+
+// Creates a post using the information sent inside the request body.
+router.post('/', (req, res) => {
+    !req.body.title || !req.body.contents ? res.status(400).json({error: 'please provide title and contents'}): blog.insert(req.body)
+    .then(blg => {
+        res.status(201).json(blg)
+    })
+    .catch(err => {
+        res.status(500).json({message: 'could not save post'})
+    })
+});
+
+// Creates a comment for the post with the specified id using information sent inside of the request body.
+router.post('/:id/comments', (req, res) => {
+    const newComment = {
+        text: req.body.text,
+        post_id: req.params.id
+    }
+    !req.body.text ? res.status(400).json({message: 'provide text'}):
+
+    blog.insertComment(newComment)
+    .then(blg => {
+        res.status(201).json(blg)
+    })
+    .catch(err => ({message: `error ${err}`}))
+})
+
+// Removes the post with the sdditional calls to the database in order to satisfy this requireme
+
+module.exports = router; //makes it available for require()
