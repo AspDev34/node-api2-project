@@ -29,3 +29,18 @@ router.get('/:id', (req, res) => {
         res.status(500).json({message: 'unable to retrieve data'})
     })
 });
+
+// Returns an array of all the comment objects associated with the post with the specified id.
+router.get('/:id/comments', (req, res) => {
+    blog.findPostComments(req.params.id)
+
+    .then(blg => {
+        console.log('blg', blg)
+        if (blg) {
+            res.status(200).json.blg
+        }
+    })
+    .catch(err => {
+        res.status(500).json({message: 'could not retrieve data'})
+    })
+})
